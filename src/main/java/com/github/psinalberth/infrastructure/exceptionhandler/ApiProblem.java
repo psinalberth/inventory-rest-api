@@ -22,7 +22,7 @@ public class ApiProblem {
 
     @Builder
     @Getter
-    static class Detail {
+    public static class Detail {
 
         private String name;
         private String userMessage;
