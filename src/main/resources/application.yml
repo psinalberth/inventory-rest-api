@@ -1,0 +1,39 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: 'inventario-api'
+
+keycloak:
+  realm: catchup-realm
+  auth-server-url: http://localhost:8081/auth
+  ssl-required: external
+  resource: maestro-client
+  credentials:
+    secret: 2d462b07-b424-49f1-bef6-db8480adb85e
+  use-resource-role-mappings: true
+  bearer-only: true
+
+app:
+  keycloak:
+    serverUrl: http://localhost:8081/auth
+    realm: catchup-realm
+    clientId: maestro-client
+    secret: 2d462b07-b424-49f1-bef6-db8480adb85e
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:postgresql://localhost:5432/inventario
+    username: postgres
+    password: postgres
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+    open-in-view: false
