@@ -10,11 +10,12 @@ import com.github.psinalberth.domain.inventory.application.port.incoming.CreateI
 import com.github.psinalberth.domain.inventory.application.port.incoming.QueryInventoryUseCase;
 import com.github.psinalberth.domain.inventory.application.port.outgoing.LoadInventoryPort;
 import com.github.psinalberth.domain.inventory.application.port.outgoing.SaveInventoryPort;
-import com.github.psinalberth.domain.shared.annotation.UseCase;
 import com.github.psinalberth.domain.shared.application.port.RetrieveCompanyPort;
 import com.github.psinalberth.domain.shared.application.port.RetrieveSubsidiaryPort;
-import com.github.psinalberth.domain.shared.provider.StringProvider;
+import com.github.psinalberth.domain.shared.domain.annotation.UseCase;
+import com.github.psinalberth.domain.shared.provider.GenerateRandomStringPort;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @UseCase
 @RequiredArgsConstructor
@@ -25,16 +26,17 @@ public class InventoryService implements CreateInventoryUseCase, QueryInventoryU
     private final RetrieveSubsidiaryPort retrieveSubsidiaryPort;
     private final LoadInventoryPort loadInventoryPort;
     private final SaveInventoryPort saveInventoryPort;
-    private final StringProvider stringProvider;
+    private final GenerateRandomStringPort generateRandomStringPort;
 
     @Override
+    @Transactional
     public InventoryDto create(CreateInventoryCommand command) {
 
         Inventory inventory = inventoryMapper.toEntity(command);
         Company company = retrieveCompanyPort.retrieve(inventory.getCompany().getName());
         Subsidiary subsidiary = retrieveSubsidiaryPort.retrieve(inventory.getSubsidiary().getName());
 
-        inventory.setCode(stringProvider.generateRandom(6).toUpperCase());
+        inventory.setCode(generateRandomStringPort.generateRandom(6).toUpperCase());
         inventory.setCompany(company);
         inventory.setSubsidiary(subsidiary);
         inventory.getBatchTypes()

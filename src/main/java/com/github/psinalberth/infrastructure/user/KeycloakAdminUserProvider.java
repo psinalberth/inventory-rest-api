@@ -1,10 +1,8 @@
 package com.github.psinalberth.infrastructure.user;
 
-import com.github.psinalberth.domain.shared.exception.ElementNotFoundException;
-import com.github.psinalberth.domain.user.provider.UserProvider;
-import com.github.psinalberth.domain.user.service.ApplicationUser;
-import com.github.psinalberth.domain.user.service.RegisterUserRequest;
-import com.github.psinalberth.domain.user.service.RegisterUserUseCase;
+import com.github.psinalberth.domain.shared.domain.exception.ElementNotFoundException;
+import com.github.psinalberth.domain.user.application.domain.model.ApplicationUser;
+import com.github.psinalberth.domain.user.application.port.incoming.RegisterUserUseCase;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.resource.UserResource;
@@ -17,27 +15,17 @@ import javax.ws.rs.core.Response;
 
 @Service
 @RequiredArgsConstructor
-public class KeycloakAdminUserProvider implements UserProvider {
+public class KeycloakAdminUserProvider {
 
     private final UsersResource usersResource;
     private final UserRepresentationMapper userRepresentationMapper;
 
-    @Override
     public ApplicationUser update(ApplicationUser user) {
         UserResource us = usersResource.get(user.getUserId());
         us.update(new UserRepresentation());
         return userRepresentationMapper.convert(us.toRepresentation());
     }
 
-    @Override
-    public ApplicationUser create(RegisterUserRequest request) {
-        UserRepresentation newUser = userRepresentationMapper.convert(request);
-        Response response = usersResource.create(newUser);
-        String userId = CreatedResponseUtil.getCreatedId(response);
-        return retrieve(userId);
-    }
-
-    @Override
     public ApplicationUser create(RegisterUserUseCase.RegisterUserCommand command) {
         UserRepresentation newUser = userRepresentationMapper.convert(command);
         Response response = usersResource.create(newUser);

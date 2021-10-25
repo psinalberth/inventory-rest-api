@@ -1,6 +1,6 @@
 package com.github.psinalberth.domain.inventory.application.domain.exception;
 
-import com.github.psinalberth.domain.shared.exception.ElementNotFoundException;
+import com.github.psinalberth.domain.shared.domain.exception.ElementNotFoundException;
 
 public class BatchTypeNotFoundException extends ElementNotFoundException {
 

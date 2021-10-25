@@ -9,7 +9,7 @@ import com.github.psinalberth.domain.inventory.adapters.persistence.BatchTypeRep
 import com.github.psinalberth.domain.inventory.adapters.persistence.InventoryItemRepository;
 import com.github.psinalberth.domain.inventory.application.port.incoming.QueryInventoryItemsUseCase;
 import com.github.psinalberth.domain.inventory.application.port.incoming.RegisterInventoryItemUseCase;
-import com.github.psinalberth.domain.shared.annotation.UseCase;
+import com.github.psinalberth.domain.shared.domain.annotation.UseCase;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

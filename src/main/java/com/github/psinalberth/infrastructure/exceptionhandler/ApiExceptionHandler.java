@@ -1,6 +1,6 @@
 package com.github.psinalberth.infrastructure.exceptionhandler;
 
-import com.github.psinalberth.domain.shared.exception.ElementNotFoundException;
+import com.github.psinalberth.domain.shared.domain.exception.ElementNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

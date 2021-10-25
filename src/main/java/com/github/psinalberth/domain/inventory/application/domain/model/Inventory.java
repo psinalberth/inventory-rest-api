@@ -2,7 +2,7 @@ package com.github.psinalberth.domain.inventory.application.domain.model;
 
 import com.github.psinalberth.domain.company.application.domain.model.Company;
 import com.github.psinalberth.domain.company.application.domain.model.Subsidiary;
-import com.github.psinalberth.domain.shared.model.BaseEntity;
+import com.github.psinalberth.domain.shared.domain.model.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
