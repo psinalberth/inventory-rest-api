@@ -22,12 +22,13 @@ import static com.github.psinalberth.domain.inventory.application.port.incoming.
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "v1/inventory/{code}/items", produces = MediaType.APPLICATION_JSON_VALUE)
-public class InventoryItemRegistryController {
+public class InventoryItemRegistryController implements InventoryItemRegistryControllerOpenApi {
 
     private final QueryInventoryUseCase queryInventoryUseCase;
     private final RegisterInventoryItemUseCase registerInventoryItemUseCase;
     private final QueryInventoryItemsUseCase queryInventoryItemsUseCase;
 
+    @Override
     @PostMapping
     public ResponseEntity<InventoryItemDto> register(@PathVariable String code, @Valid @RequestBody RegisterInventoryItemCommand command) {
         return Optional.ofNullable(queryInventoryUseCase.query(new QueryInventoryCommand(code)))
@@ -40,6 +41,7 @@ public class InventoryItemRegistryController {
                 .orElseThrow(() -> new RuntimeException(""));
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<List<InventoryItemDto>> query(@PathVariable String code) {
         return ResponseEntity.ok(queryInventoryItemsUseCase.query(new QueryInventoryItemsCommand(code)));

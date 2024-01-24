@@ -18,16 +18,18 @@ import static com.github.psinalberth.domain.inventory.application.port.incoming.
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "v1/inventory", produces = MediaType.APPLICATION_JSON_VALUE)
-public class InventoryRegistryController {
+public class InventoryRegistryController implements InventoryRegistryControllerOpenApi {
 
     private final CreateInventoryUseCase createInventoryUseCase;
     private final QueryInventoryUseCase queryInventoryUseCase;
 
+    @Override
     @GetMapping(value = "/{code}")
     public ResponseEntity<InventoryDto> findByCode(@PathVariable String code) {
         return ResponseEntity.ok(queryInventoryUseCase.query(new QueryInventoryCommand(code)));
     }
 
+    @Override
     @PostMapping
     public ResponseEntity<InventoryDto> create(@Valid @RequestBody CreateInventoryUseCase.CreateInventoryCommand command) {
         return Optional.ofNullable(createInventoryUseCase.create(command))

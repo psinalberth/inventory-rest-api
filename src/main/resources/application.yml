@@ -21,6 +21,14 @@ app:
     clientId: maestro-client
     secret: 2d462b07-b424-49f1-bef6-db8480adb85e
 
+springdoc:
+  api-docs:
+    version: openapi_3_1
+    enabled: true
+  swagger-ui:
+    disable-swagger-default-url: true
+    path: /docs
+
 ---
 
 spring:

@@ -11,11 +11,11 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI openAPI() {
-        Contact contact =  new Contact()
+        final var contact =  new Contact()
                 .name("Inalberth Pinheiro Santos")
                 .email("inalberth07@gmail.com");
 
-        Info info = new Info()
+        final var info = new Info()
                 .title("inventario-api")
                 .description("API responsável pelo gerenciamento dos inventários das lojas")
                 .version("0.0.1")

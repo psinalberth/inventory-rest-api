@@ -14,16 +14,18 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "v1/users", produces = MediaType.APPLICATION_JSON_VALUE)
-public class UserController {
+public class UserController implements UserControllerOpenApi {
 
     private final RegisterUserUseCase registerUserUseCase;
     private final QueryUserUseCase queryUserUseCase;
 
+    @Override
     @PostMapping
     public ApplicationUser register(@Valid @RequestBody RegisterUserCommand command) {
         return registerUserUseCase.register(command);
     }
 
+    @Override
     @GetMapping(value = "/{userId}")
     public ApplicationUser retrieve(@PathVariable String userId) {
         RetrieveUserCommand command = new RetrieveUserCommand(userId);

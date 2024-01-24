@@ -15,10 +15,16 @@ public class InventoryDto {
 
     @Schema(hidden = true)
     private Long inventoryId;
+
+    @Schema(example = "X78ZAQ")
     private String accessCode;
+
+    @Schema(example = "My awesome inventory")
     private String title;
     private CompanyDto company;
     private SubsidiaryDto subsidiary;
     private List<BatchTypeDto> batchTypes;
+
+    @Schema(example = "2021-11-02 09:47:10")
     private LocalDateTime createdAt;
 }
