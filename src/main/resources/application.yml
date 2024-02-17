@@ -42,6 +42,8 @@ spring:
   jpa:
     generate-ddl: true
     show-sql: true
+    hibernate:
+      ddl-auto: update
     properties:
       hibernate.format_sql: true
     open-in-view: false
