@@ -47,7 +47,7 @@ public class InventoryService implements CreateInventoryUseCase, QueryInventoryU
 
     @Override
     public InventoryDto query(QueryInventoryCommand command) {
-        String identity = command.getCode().toUpperCase();
+        var identity = command.code().toUpperCase();
         return loadInventoryPort.findByCode(identity)
                 .map(inventoryMapper::toOutputModel)
                 .orElseThrow(() -> new InventoryNotFoundException(identity));

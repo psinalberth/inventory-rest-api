@@ -26,8 +26,8 @@ public class InventoryItemService implements RegisterInventoryItemUseCase, Query
     @Override
     public InventoryItemDto register(RegisterInventoryItemCommand command) {
 
-        InventoryItem inventoryItem = inventoryItemMapper.toEntity(command);
-        BatchType batchType = batchTypeRepository.findById(command.getBatchTypeId())
+        var inventoryItem = inventoryItemMapper.toEntity(command);
+        var batchType = batchTypeRepository.findById(command.getBatchTypeId())
                 .orElseThrow(() -> new BatchTypeNotFoundException(command.getBatchTypeId()));
 
         inventoryItem.setBatchType(batchType);

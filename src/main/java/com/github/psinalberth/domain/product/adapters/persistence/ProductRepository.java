@@ -13,8 +13,8 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, String>, SaveProductPort, LoadProductPort {
 
     @Query("select p from Product p " +
-            "join fetch p.categories " +
-            "join fetch p.groups " +
+            "join fetch p.category " +
+            "join fetch p.group " +
             "where p.productId = :productId")
     Optional<Product> findByProductId(String productId);
 }

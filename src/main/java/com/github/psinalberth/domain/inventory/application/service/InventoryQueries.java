@@ -1,21 +1,17 @@
 package com.github.psinalberth.domain.inventory.application.service;
 
+import com.github.psinalberth.domain.inventory.application.domain.dto.BatchTypeDto;
+import com.github.psinalberth.domain.inventory.application.domain.dto.InventoryItemDto;
 import com.github.psinalberth.domain.inventory.application.domain.model.BatchType;
 import com.github.psinalberth.domain.inventory.application.domain.model.InventoryItem;
-import com.github.psinalberth.domain.inventory.application.domain.dto.InventoryItemDto;
-import com.github.psinalberth.domain.inventory.application.domain.dto.BatchTypeDto;
 import com.github.psinalberth.domain.inventory.application.port.incoming.QueryInventoryItemsUseCase;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.criteria.Path;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.query.criteria.internal.OrderImpl;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Tuple;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,9 +25,9 @@ public class InventoryQueries {
 
     public List<InventoryItemDto> queryItems(QueryInventoryItemsUseCase.QueryInventoryItemsCommand command) {
 
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Tuple>  query = builder.createQuery(Tuple.class);
-        Root<InventoryItem> root = query.from(InventoryItem.class);
+        var builder = entityManager.getCriteriaBuilder();
+        var query = builder.createQuery(Tuple.class);
+        var root = query.from(InventoryItem.class);
 
         // Paths
 
@@ -44,9 +40,9 @@ public class InventoryQueries {
         // Query
 
         query.multiselect(productId, batchTypeId, batchTypeName, builder.sum(root.get("quantity")));
-        query.where(builder.equal(root.get("inventory").get("code"), command.getCode().toUpperCase()));
+        query.where(builder.equal(root.get("inventory").get("code"), command.code().toUpperCase()));
         query.groupBy(inventoryId, productId, batchTypeId, batchTypeName);
-        query.orderBy(new OrderImpl(productId), new OrderImpl(batchTypeId));
+        query.orderBy(builder.asc(productId), builder.asc(batchTypeId));
 
         return entityManager.createQuery(query)
                 .getResultList()

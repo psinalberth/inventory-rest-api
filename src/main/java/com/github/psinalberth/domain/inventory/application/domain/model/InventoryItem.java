@@ -4,7 +4,7 @@ import com.github.psinalberth.domain.shared.domain.model.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 @Entity

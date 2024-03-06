@@ -3,13 +3,16 @@ package com.github.psinalberth.domain.inventory.adapters.web;
 import com.github.psinalberth.domain.inventory.application.domain.dto.InventoryDto;
 import com.github.psinalberth.domain.inventory.application.port.incoming.CreateInventoryUseCase;
 import com.github.psinalberth.domain.inventory.application.port.incoming.QueryInventoryUseCase;
+import com.github.psinalberth.domain.product.application.domain.port.incoming.ImportProductUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.util.Optional;
 
@@ -22,6 +25,7 @@ public class InventoryRegistryController implements InventoryRegistryControllerO
 
     private final CreateInventoryUseCase createInventoryUseCase;
     private final QueryInventoryUseCase queryInventoryUseCase;
+    private final ImportProductUseCase importProductUseCase;
 
     @Override
     @GetMapping(value = "/{code}")
@@ -35,6 +39,14 @@ public class InventoryRegistryController implements InventoryRegistryControllerO
         return Optional.ofNullable(createInventoryUseCase.create(command))
                 .map(inventory -> ResponseEntity.created(buildURI(inventory)).body(inventory))
                 .orElseThrow(() -> new RuntimeException("Error creating inventory audit."));
+    }
+
+    @Override
+    @PutMapping(value = "/{code}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> upload(@PathVariable String code, @RequestPart(value = "file") MultipartFile file) throws IOException {
+        var command = new ImportProductUseCase.ImportProductCommand(code, file.getInputStream());
+        importProductUseCase.doImport(command);
+        return ResponseEntity.noContent().build();
     }
 
     private URI buildURI(InventoryDto inventory) {

@@ -4,7 +4,7 @@ import com.github.psinalberth.domain.shared.domain.model.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Data

@@ -4,15 +4,13 @@ import com.github.psinalberth.domain.inventory.adapters.web.InventoryRegistryCon
 import com.github.psinalberth.domain.product.application.domain.dto.ProductDto;
 import com.github.psinalberth.domain.product.application.domain.port.incoming.CreateProductUseCase;
 import com.github.psinalberth.domain.product.application.domain.port.incoming.QueryProductUseCase;
-import com.github.psinalberth.domain.product.application.domain.port.incoming.QueryProductUseCase.QueryProductCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.Optional;
 
@@ -35,11 +33,11 @@ public class ProductController implements ProductControllerOpenApi {
     @Override
     @GetMapping(value = "/{productId}")
     public ResponseEntity<ProductDto> findById(@PathVariable String productId) {
-        return ResponseEntity.ok(queryProductUseCase.query(new QueryProductCommand(productId)));
+        return ResponseEntity.ok(queryProductUseCase.query(new QueryProductUseCase.QueryProductCommand(productId)));
     }
 
     private URI buildURI(ProductDto product) {
-        return  MvcUriComponentsBuilder.fromMethodName(InventoryRegistryController.class, "findById", product.getProductId())
+        return  MvcUriComponentsBuilder.fromMethodName(ProductController.class, "findById", product.getProductId())
                 .build()
                 .toUri();
     }

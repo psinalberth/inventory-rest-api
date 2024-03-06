@@ -3,6 +3,7 @@ package com.github.psinalberth.domain.product.adapters.mapper;
 import com.github.psinalberth.domain.product.application.domain.dto.ProductDto;
 import com.github.psinalberth.domain.product.application.domain.model.Product;
 import com.github.psinalberth.domain.product.application.domain.model.ProductCategory;
+import com.github.psinalberth.domain.product.application.domain.model.ProductDepartment;
 import com.github.psinalberth.domain.product.application.domain.model.ProductGroup;
 import com.github.psinalberth.domain.product.application.domain.port.incoming.CreateProductUseCase;
 import org.mapstruct.InjectionStrategy;
@@ -26,6 +27,9 @@ public interface ProductMapper {
 
     @Mapping(target = "name", source = "group")
     ProductGroup toProductGroupEntity(String group);
+
+    @Mapping(target = "name", source = "department")
+    ProductDepartment toProductDepartmentEntity(String department);
 
     default String toProductCategoryOutputModel(ProductCategory productCategory) {
         return String.valueOf(productCategory.getName());

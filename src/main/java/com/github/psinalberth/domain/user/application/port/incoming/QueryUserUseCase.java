@@ -3,7 +3,7 @@ package com.github.psinalberth.domain.user.application.port.incoming;
 import com.github.psinalberth.domain.user.application.domain.model.ApplicationUser;
 import lombok.Value;
 
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 
 public interface QueryUserUseCase {
 

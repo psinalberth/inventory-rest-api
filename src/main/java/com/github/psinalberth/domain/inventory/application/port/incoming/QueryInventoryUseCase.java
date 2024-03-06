@@ -1,18 +1,16 @@
 package com.github.psinalberth.domain.inventory.application.port.incoming;
 
 import com.github.psinalberth.domain.inventory.application.domain.dto.InventoryDto;
-import lombok.Value;
 
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 
 public interface QueryInventoryUseCase {
 
     InventoryDto query(QueryInventoryCommand command);
 
-    @Value
-    class QueryInventoryCommand {
-
-        @NotEmpty(message = "Inventory code is required.")
-        String code;
+    record QueryInventoryCommand(
+            @NotEmpty(message = "Inventory code is required.")
+            String code
+    ) {
     }
 }

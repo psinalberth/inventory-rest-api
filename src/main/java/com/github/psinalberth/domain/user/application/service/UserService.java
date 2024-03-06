@@ -6,7 +6,7 @@ import com.github.psinalberth.domain.user.application.port.incoming.QueryUserUse
 import com.github.psinalberth.domain.user.application.port.incoming.RegisterUserUseCase;
 import lombok.RequiredArgsConstructor;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @UseCase
 @RequiredArgsConstructor

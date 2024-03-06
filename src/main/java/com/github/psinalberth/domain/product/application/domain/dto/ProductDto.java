@@ -4,8 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 public class ProductDto {
@@ -16,9 +14,9 @@ public class ProductDto {
     @Schema(example = "Rice")
     private String name;
 
-    @Schema(example = "[ \"Rice\" ]")
-    private List<String> categories;
+    @Schema(example = "Rice")
+    private String category;
 
-    @Schema(example = "[ \"Rice\" ]")
-    private List<String> groups;
+    @Schema(example = "Rice")
+    private String group;
 }

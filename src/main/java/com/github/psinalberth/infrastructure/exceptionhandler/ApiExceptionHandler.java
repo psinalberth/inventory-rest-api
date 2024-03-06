@@ -1,15 +1,15 @@
 package com.github.psinalberth.infrastructure.exceptionhandler;
 
 import com.github.psinalberth.domain.shared.domain.exception.ElementNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -20,7 +20,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.validation.ConstraintViolationException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,22 +40,23 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers, HttpStatus status,
+                                                                  HttpHeaders headers, HttpStatusCode status,
                                                                   WebRequest request) {
         return handleValidationException(ex, headers, status, request, ex.getBindingResult());
     }
 
-    @Override
-    protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status,
-                                                         WebRequest request) {
-        return handleValidationException(ex, headers, status, request, ex.getBindingResult());
-    }
+//    @Override
+//    protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatusCode status,
+//                                                         WebRequest request) {
+//        return handleValidationException(ex, headers, status, request, ex.getBindingResult());
+//    }
+
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers,
-                                                                  HttpStatus status, WebRequest request) {
+                                                                  HttpStatusCode status, WebRequest request) {
 
-        ApiProblem problem = createApiProblem(status, MSG_ERRO_GENERICO, request, ApiProblemType.MENSAGEM_INCOMPREENSIVEL)
+        ApiProblem problem = createApiProblem((HttpStatus) status, MSG_ERRO_GENERICO, request, ApiProblemType.MENSAGEM_INCOMPREENSIVEL)
                 .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
@@ -64,19 +64,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
-                                                                      HttpHeaders headers, HttpStatus status,
+                                                                      HttpHeaders headers, HttpStatusCode status,
                                                                       WebRequest request) {
         return ResponseEntity.status(status).headers(headers).build();
-    }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    protected ResponseEntity<Object> handleAccessDenied(AccessDeniedException ex, WebRequest request) {
-        String message = "Você não possui permissão para executar esta operação.";
-        HttpStatus status = HttpStatus.FORBIDDEN;
-        ApiProblem problem = createApiProblem(status, message, request, ApiProblemType.ACESSO_NEGADO)
-                .build();
-
-        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -129,7 +119,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
-    private ResponseEntity<Object> handleValidationException(Exception ex, HttpHeaders headers, HttpStatus status,
+    private ResponseEntity<Object> handleValidationException(Exception ex, HttpHeaders headers, HttpStatusCode status,
                                                              WebRequest request,
                                                              BindingResult bindingResult) {
 
@@ -151,7 +141,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
                         }).collect(Collectors.toList());
 
-        ApiProblem problem = createApiProblem(status, MSG_ERRO_BEAN_VALIDATION, request, ApiProblemType.DADOS_INVALIDOS)
+        ApiProblem problem = createApiProblem((HttpStatus) status, MSG_ERRO_BEAN_VALIDATION, request, ApiProblemType.DADOS_INVALIDOS)
                 .details(details)
                 .build();
 
@@ -172,7 +162,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
-                                                             HttpStatus status, WebRequest request) {
+                                                             HttpStatusCode status, WebRequest request) {
 
         ApiProblem.ApiProblemBuilder problem = ApiProblem.builder()
                 .timestamp(OffsetDateTime.now())
@@ -180,7 +170,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .userMessage(MSG_ERRO_GENERICO);
 
         if (body == null) {
-            body = problem.title(status.getReasonPhrase()).build();
+            body = problem.title(status.toString()).build();
         } else if (body instanceof String) {
             body = problem.title((String) body).build();
         }

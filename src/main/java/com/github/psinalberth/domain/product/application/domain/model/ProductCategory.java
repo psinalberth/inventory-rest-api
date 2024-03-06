@@ -1,16 +1,20 @@
 package com.github.psinalberth.domain.product.application.domain.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class ProductCategory {
+public class ProductCategory implements IProductCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
