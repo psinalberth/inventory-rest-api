@@ -15,5 +15,8 @@ public interface InventoryItemMapper {
     @Mapping(target = "inventory", source = "inventoryId")
     InventoryItem toEntity(RegisterInventoryItemUseCase.RegisterInventoryItemCommand command);
 
+    @Mapping(target = "productId", source = "product.productId")
+    @Mapping(target = "name", source = "product.name")
+    @Mapping(target = "price", source = "product.price")
     InventoryItemDto toOutputModel(InventoryItem inventoryItem);
 }

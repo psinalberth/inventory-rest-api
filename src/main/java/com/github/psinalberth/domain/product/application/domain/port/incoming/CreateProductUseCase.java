@@ -1,9 +1,9 @@
 package com.github.psinalberth.domain.product.application.domain.port.incoming;
 
 import com.github.psinalberth.domain.product.application.domain.dto.ProductDto;
-import lombok.Value;
-
 import jakarta.validation.constraints.NotEmpty;
+
+import java.math.BigDecimal;
 
 public interface CreateProductUseCase {
 
@@ -17,7 +17,8 @@ public interface CreateProductUseCase {
                 String name,
                 String category,
                 String department,
-                String group
+                String group,
+                BigDecimal price
         ) {
 
     }

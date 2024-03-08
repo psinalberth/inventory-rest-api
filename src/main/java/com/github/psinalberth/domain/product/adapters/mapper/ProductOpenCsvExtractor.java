@@ -30,7 +30,8 @@ public class ProductOpenCsvExtractor extends OpenCsvExtractor implements Product
                         v.getName(),
                         new ProductCategory(v.getCategory().getCategoryId(), v.getCategory().getName(), null, null),
                         new ProductGroup(v.getGroup().getGroupId(), v.getGroup().getName(), null, null),
-                        new ProductDepartment(v.getDepartment().getDepartmentId(), v.getDepartment().getName(), null)
+                        new ProductDepartment(v.getDepartment().getDepartmentId(), v.getDepartment().getName(), null),
+                        v.getPrice()
                 ))
                 .orElse(null);
     }

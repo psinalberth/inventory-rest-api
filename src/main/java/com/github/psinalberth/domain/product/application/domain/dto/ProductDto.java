@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 public class ProductDto {
@@ -19,4 +21,10 @@ public class ProductDto {
 
     @Schema(example = "Rice")
     private String group;
+
+    @Schema(example = "Rice")
+    private String department;
+
+    @Schema(example = "8.99")
+    private BigDecimal price;
 }

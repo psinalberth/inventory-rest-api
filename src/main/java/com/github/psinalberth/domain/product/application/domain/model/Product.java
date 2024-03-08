@@ -1,15 +1,13 @@
 package com.github.psinalberth.domain.product.application.domain.model;
 
 import com.github.psinalberth.domain.shared.domain.model.BaseEntity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import java.math.BigDecimal;
 
 @Entity
 @Data
@@ -24,11 +22,21 @@ public class Product extends BaseEntity implements IProduct {
     private String name;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_id")
     private ProductCategory category;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "group_id")
     private ProductGroup group;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "department_id")
     private ProductDepartment department;
+
+    private BigDecimal price;
+
+    public Product(String productId) {
+        this.productId = productId;
+        this.name = "Product not registered";
+    }
 }

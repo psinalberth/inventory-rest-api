@@ -13,6 +13,8 @@ import com.github.psinalberth.domain.shared.domain.exception.ElementNotFoundExce
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @UseCase
 @RequiredArgsConstructor
 public class ProductService implements CreateProductUseCase, QueryProductUseCase, ImportProductUseCase {
@@ -28,9 +30,14 @@ public class ProductService implements CreateProductUseCase, QueryProductUseCase
 
         var product = productMapper.toEntity(command);
 
-        product.getCategory().setProduct(product);
-        product.getDepartment().setProduct(product);
-        product.getGroup().setProduct(product);
+        Optional.ofNullable(product.getCategory())
+                .ifPresent(category -> category.setProduct(product));
+
+        Optional.ofNullable(product.getDepartment())
+                .ifPresent(department -> department.setProduct(product));
+
+        Optional.ofNullable(product.getGroup())
+                .ifPresent(group -> group.setProduct(product));
 
         return productMapper.toOutputModel(saveProductPort.save(product));
     }
@@ -47,9 +54,15 @@ public class ProductService implements CreateProductUseCase, QueryProductUseCase
     public void doImport(ImportProductCommand command) {
         productCsvExtractor.extract(command.getProductBase())
                 .forEach(p -> {
-                    p.getCategory().setProduct(p);
-                    p.getDepartment().setProduct(p);
-                    p.getGroup().setProduct(p);
+
+                    Optional.ofNullable(p.getCategory())
+                            .ifPresent(category -> category.setProduct(p));
+
+                    Optional.ofNullable(p.getDepartment())
+                            .ifPresent(department -> department.setProduct(p));
+
+                    Optional.ofNullable(p.getGroup())
+                            .ifPresent(group -> group.setProduct(p));
 
                     saveProductPort.save(p);
                 });

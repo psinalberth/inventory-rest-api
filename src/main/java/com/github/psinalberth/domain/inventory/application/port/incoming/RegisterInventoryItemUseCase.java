@@ -17,12 +17,15 @@ public interface RegisterInventoryItemUseCase {
     @Setter
     class RegisterInventoryItemCommand {
 
+        @Schema(example = "78912345678901")
         @NotEmpty(message = "Product is required.")
         String productId;
 
+        @Schema(example = "10")
         @NotNull(message = "Quantity is required.")
         BigDecimal quantity;
 
+        @Schema(example = "1")
         @NotNull(message = "Batch type is required.")
         Long batchTypeId;
 

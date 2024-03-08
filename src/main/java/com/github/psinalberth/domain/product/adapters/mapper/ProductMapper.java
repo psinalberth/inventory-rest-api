@@ -10,6 +10,8 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.Optional;
+
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface ProductMapper {
 
@@ -32,10 +34,20 @@ public interface ProductMapper {
     ProductDepartment toProductDepartmentEntity(String department);
 
     default String toProductCategoryOutputModel(ProductCategory productCategory) {
-        return String.valueOf(productCategory.getName());
+        return Optional.ofNullable(productCategory)
+                .map(value -> String.valueOf(value.getName()))
+                .orElse(null);
     }
 
     default String toProductGroupOutputModel(ProductGroup productGroup) {
-        return String.valueOf(productGroup.getName());
+        return Optional.ofNullable(productGroup)
+                .map(value -> String.valueOf(value.getName()))
+                .orElse(null);
+    }
+
+    default String toProductDepartmentOutputModel(ProductDepartment productDepartment) {
+        return Optional.ofNullable(productDepartment)
+                .map(value -> String.valueOf(value.getName()))
+                .orElse(null);
     }
 }

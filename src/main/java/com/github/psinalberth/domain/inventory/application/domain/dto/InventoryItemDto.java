@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -14,6 +15,15 @@ import java.math.BigDecimal;
 public class InventoryItemDto {
 
     private String productId;
+    private String name;
     private BatchTypeDto batchType;
     private BigDecimal quantity;
+    private BigDecimal price;
+
+    public BigDecimal getTotalPrice() {
+        if (Objects.isNull(quantity) || Objects.isNull(price))
+            return BigDecimal.ZERO;
+
+        return quantity.multiply(price);
+    }
 }
