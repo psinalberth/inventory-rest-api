@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
@@ -78,9 +77,6 @@ public class InventoryQueries {
         Path<Product> product = root.get("product");
         Path<String> productId = product.get("productId");
         Path<String> productName = product.get("name");
-        Path<BatchType> batchType = root.get("batchType");
-        Path<Long> batchTypeId = batchType.get("batchTypeId");
-        Path<String> batchTypeName = batchType.get("name");
 
         // Query
 
@@ -115,26 +111,24 @@ public class InventoryQueries {
 
     private static InventoryReportItemDto makeReportItem(Tuple tuple) {
 
-        var price = Optional.ofNullable(tuple.get(2))
-                .map(value -> new BigDecimal(String.valueOf(value)))
-                .orElse(BigDecimal.ZERO);
-
-        var expectedQuantity = Optional.ofNullable(tuple.get(3))
-                .map(value -> new BigDecimal(String.valueOf(value)))
-                .orElse(BigDecimal.ZERO);
-
-        var actualQuantity = Optional.ofNullable(tuple.get(4))
-                .map(value -> new BigDecimal(String.valueOf(value)))
-                .orElse(BigDecimal.ZERO);
+        var price = getValue(tuple.get(2));
+        var expectedQuantity = getValue(tuple.get(3));
+        var actualQuantity = getValue(tuple.get(4));
 
         return new InventoryReportItemDto(
             String.valueOf(tuple.get(0)),
             String.valueOf(tuple.get(1)),
             price,
             expectedQuantity,
-            actualQuantity,
             price.multiply(expectedQuantity).setScale(2, RoundingMode.HALF_UP),
+            actualQuantity,
             price.multiply(actualQuantity).setScale(2, RoundingMode.HALF_UP)
         );
+    }
+
+    private static BigDecimal getValue(Object obj) {
+        return Optional.ofNullable(obj)
+                .map(value -> new BigDecimal(String.valueOf(value)))
+                .orElse(BigDecimal.ZERO);
     }
 }

@@ -7,6 +7,9 @@ import com.github.psinalberth.domain.inventory.application.port.incoming.QueryIn
 import com.github.psinalberth.domain.inventory.application.port.incoming.QueryInventoryUseCase.QueryInventoryCommand;
 import com.github.psinalberth.domain.inventory.application.port.incoming.RegisterInventoryItemUseCase;
 import com.opencsv.CSVWriter;
+import com.opencsv.bean.ColumnPositionMappingStrategy;
+import com.opencsv.bean.ColumnPositionMappingStrategyBuilder;
+import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
@@ -60,11 +63,29 @@ public class InventoryItemRegistryController implements InventoryItemRegistryCon
     public ResponseEntity<StreamingResponseBody> queryReport(@PathVariable String code) {
 
         var items = queryInventoryItemsUseCase.queryReport(new QueryInventoryItemsCommand(code));
+        var strategy = new ColumnPositionMappingStrategy<InventoryReportItemDto>() {
+            @Override
+            public String[] generateHeader(InventoryReportItemDto bean) throws CsvRequiredFieldEmptyException {
+                super.generateHeader(bean);
+                return new String[] {
+                        "cod_produto",
+                        "nome_produto",
+                        "preco",
+                        "qte_cadastrada",
+                        "valor_total_cadastrado",
+                        "qte_real",
+                        "valor_total_real"
+                };
+            }
+        };
+
+        strategy.setType(InventoryReportItemDto.class);
 
         StreamingResponseBody responseBody = outputStream -> {
             try (var writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)) {
                 new StatefulBeanToCsvBuilder<InventoryReportItemDto>(writer)
-                        .withQuotechar('\'')
+                        .withOrderedResults(true)
+                        .withMappingStrategy(strategy)
                         .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
                         .build()
                         .write(items);
