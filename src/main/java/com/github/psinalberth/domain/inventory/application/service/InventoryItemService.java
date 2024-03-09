@@ -1,5 +1,6 @@
 package com.github.psinalberth.domain.inventory.application.service;
 
+import com.github.psinalberth.domain.inventory.application.domain.dto.InventoryReportItemDto;
 import com.github.psinalberth.domain.inventory.application.domain.exception.BatchTypeNotFoundException;
 import com.github.psinalberth.domain.inventory.adapters.mapper.InventoryItemMapper;
 import com.github.psinalberth.domain.inventory.application.domain.model.BatchType;
@@ -46,5 +47,10 @@ public class InventoryItemService implements RegisterInventoryItemUseCase, Query
     @Override
     public List<InventoryItemDto> query(QueryInventoryItemsCommand command) {
         return inventoryQueries.queryItems(command);
+    }
+
+    @Override
+    public List<InventoryReportItemDto> queryReport(QueryInventoryItemsCommand command) {
+        return inventoryQueries.queryReportItems(command);
     }
 }

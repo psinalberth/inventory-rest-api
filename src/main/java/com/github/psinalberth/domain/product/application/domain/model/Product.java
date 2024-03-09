@@ -35,6 +35,8 @@ public class Product extends BaseEntity implements IProduct {
 
     private BigDecimal price;
 
+    private BigDecimal quantity;
+
     public Product(String productId) {
         this.productId = productId;
         this.name = "Product not registered";

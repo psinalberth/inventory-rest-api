@@ -18,7 +18,9 @@ public interface CreateProductUseCase {
                 String category,
                 String department,
                 String group,
-                BigDecimal price
+                BigDecimal price,
+
+                BigDecimal quantity
         ) {
 
     }
