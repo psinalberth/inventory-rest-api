@@ -3,6 +3,13 @@ spring:
     active: dev
   application:
     name: 'inventario-api'
+  data:
+    mongodb:
+      host: "iad2-c18-2.mongo.objectrocket.com,iad2-c18-0.mongo.objectrocket.com,iad2-c18-1.mongo.objectrocket.com"
+      port: 52320
+      database: inventory
+      user: usr_admin
+      password: "Q3vgvj7z..."
 
 keycloak:
   realm: catchup-realm
