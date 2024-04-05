@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+  body {
+    font-family: sans-serif;
+    padding: 0rem 5rem;
+  }
+  table, td, tr, th {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  th, td {
+    padding: 1rem 0.5rem;
+  }
+
+  th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+
+  tr:nth-child(even){background-color: #f2f2f2;}
+
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Import Layout</title>
+</head>
+<body>
+<section>
+    <h1>⭐Sobre o Layout</h1>
+    <p>
+        Para o funcionamento correto do processo de importação da base de produtos, disponibilizamos abaixo o <em>layout</em> de importação necessário:
+    </p>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Coluna</th>
+            <th>Descrição</th>
+            <th>Exemplo</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>cod_barras</td>
+            <td>Código de barras do produto</td>
+            <td>789012345678</td>
+        </tr>
+        <tr>
+            <td>cod_produto</td>
+            <td>Identificador interno do produto</td>
+            <td>1125</td>
+        </tr>
+        <tr>
+            <td>desc_produto</td>
+            <td>Descrição do produto</td>
+            <td>Meu produto</td>
+        </tr>
+        <tr>
+            <td>cod_categoria</td>
+            <td>Código da categoria do produto</td>
+            <td>8</td>
+        </tr>
+        <tr>
+            <td>desc_categoria</td>
+            <td>Nome da categoria</td>
+            <td>Minha categoria 16</td>
+        </tr>
+        <tr>
+            <td>cod_departamento</td>
+            <td>Código do departamento do produto</td>
+            <td>4445</td>
+        </tr>
+        <tr>
+            <td>desc_departamento</td>
+            <td>Nome do departamento</td>
+            <td>Meu departamento</td>
+        </tr>
+        <tr>
+            <td>cod_filial</td>
+            <td>Código da seção do produto</td>
+            <td>1164</td>
+        </tr>
+        <tr>
+            <td>desc_filial</td>
+            <td>Nome da seção do produto</td>
+            <td>Unidade 1164</td>
+        </tr>
+        <tr>
+            <td>qte</td>
+            <td>Quantidade cadastrada de produto</td>
+            <td>20</td>
+        </tr>
+        <tr>
+            <td>valor</td>
+            <td>Valor unitário do produto</td>
+            <td>19.95</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+<section>
+    <h2>❗ Importante!</h2>
+    <p>
+        Não é permitido o uso de vírgula (,) em descrições, quantidades ou valores. Sempre que necessário utilizar ponto (.) para representar valores e quantidades decimais ou descrições.
+    </p>
+    <h4>Exemplos</h4>
+    <table>
+        <thead>
+        <tr>
+            <th>Quantidade</th>
+            <th>Valor</th>
+            <th>Campos de Texto</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>👍 20</td>
+            <td>👍 15</td>
+            <td>👍 Produto XYZ</td>
+        </tr>
+        <tr>
+            <td>👍 75.2</td>
+            <td>👍 37.75</td>
+            <td>👍 Produto 41.5G</td>
+        </tr>
+        <tr>
+            <td>👎 41,5</td>
+            <td>👎 1,25</td>
+            <td>👎 Produto 41,5G</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+</body>
+</html>

@@ -20,14 +20,41 @@ app:
     realm: catchup-realm
     clientId: maestro-client
     secret: 2d462b07-b424-49f1-bef6-db8480adb85e
+  config:
+    inventory:
+      default-id: ZXC8GH
+    retry:
+      max-attempts: ${APP_CONFIG_RETRY_MAX_ATTEMPTS:3}
+      backoff: ${APP_CONFIG_RETRY_BACKOFF:1s}
 
 springdoc:
+  version: '@springdoc.version@'
   api-docs:
     version: openapi_3_1
-    enabled: true
+    enabled: false
   swagger-ui:
     disable-swagger-default-url: true
-    path: /docs
+    url: /openapi.yml
+    path: docs
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: heroku
+  datasource:
+    url: jdbc:postgresql://ec2-44-212-250-48.compute-1.amazonaws.com:5432/d1bo571k42qkl2
+    username: qkdlrsuwbhbigz
+    password: da1fb910033a2da360aee6365d7132a592844ec917c64f7429892e1620d0f320
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.format_sql: true
+    open-in-view: false
 
 ---
 

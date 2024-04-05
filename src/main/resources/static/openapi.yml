@@ -1,0 +1,413 @@
+openapi: 3.0.3
+info:
+  title: Inventory API
+  description: REST API responsible for inventory management
+  contact:
+    name: Inalberth Pinheiro
+    email: inalberth07@gmail.com
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: /layout.html
+servers:
+  - url: v1
+tags:
+  - name: Inventory
+    description: Responsible for inventory management
+  - name: Inventory Items
+    description: Responsible for items management
+  - name: Products
+    description: Responsible for products management
+    externalDocs:
+      description: Import layout
+      url: /layout.html
+  - name: Reports
+    description: Reports section
+paths:
+  /inventories:
+    post:
+      tags:
+        - Inventory
+      summary: Creates a new inventory
+      description: Creates and saves a new inventory
+      operationId: createInventory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInventoryCommand'
+      responses:
+        '201':
+          description: Inventory created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+          headers:
+            Location:
+              description: Resource location
+              schema:
+                example: http://server.com/v1/inventories/014ac952-3e9c-4a5d-89bc-4957319b5ca7
+                type: string
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  '/inventories/{code}':
+    get:
+      tags:
+        - Inventory
+      summary: Fetches and retrieves inventory
+      description: Finds an inventory given an access code
+      operationId: fetchInventory
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Inventory found successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+        '404':
+          description: Inventory not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  '/inventories/{code}/items':
+    post:
+      tags:
+        - Inventory Items
+      summary: Registers a new item related to given inventory
+      description: Registers item related to inventory
+      operationId: registerInventoryItem
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterInventoryItemCommand'
+      responses:
+        '201':
+          description: Inventory item created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryItem'
+        '404':
+          description: Inventory not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    get:
+      tags:
+        - Inventory Items
+      summary: Lists inventory items related to given inventory
+      description: Lists inventory items related to inventory
+      operationId: fetchInventoryItems
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Inventory items found successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        '404':
+          description: Inventory not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  '/inventories/{code}/products':
+    post:
+      tags:
+        - Products
+      summary: Import products to inventory
+      description: Import products to inventory product base
+      operationId: importProducts
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+            encoding:
+              file:
+                contentType: text/csv
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Products base imported successfully
+        '404':
+          description: Inventory not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  '/inventories/{code}/products/{productId}':
+    get:
+      tags:
+        - Products
+      summary: Fetches product related to inventory
+      description: Fetches product related to an inventory
+      operationId: fetchProduct
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Inventory items found successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  '/reports/inventory/{code}/items':
+    get:
+      tags:
+        - Reports
+      operationId: exportItems
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Inventory items found successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InventoryItemReport'
+        '404':
+          description: Inventory not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    CreateInventoryCommand:
+      type: object
+      properties:
+        company:
+          type: string
+          example: MyCompany Inc.
+        subsidiary:
+          type: string
+          example: Store 101
+        title:
+          type: string
+          example: Inventory no. 1
+        batchTypes:
+          type: array
+          items:
+            type: string
+          example: [ "Batch 1", "Batch 2", "Batch 3" ]
+      required:
+        - title
+        - batchTypes
+    Inventory:
+      type: object
+      properties:
+        id:
+          type: string
+          example: c3780883-be25-43f2-9552-d40fa7d6f934
+        code:
+          type: string
+          example: GZ8CJH
+        company:
+          type: string
+          example: MyCompany Inc.
+        subsidiary:
+          type: string
+          example: Store 101
+        title:
+          type: string
+          example: Inventory no. 1
+        batchTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchType'
+        createdAt:
+          type: string
+          example: 2024-01-13T12:46:09.008+00:00
+    BatchType:
+      type: object
+      properties:
+        id:
+          type: string
+          example: c6d0ef07-0e12-47ee-8ef3-9dce20d29b56
+        name:
+          type: string
+          example: Batch 1
+    RegisterInventoryItemCommand:
+      type: object
+      properties:
+        inventoryId:
+          type: string
+          example: c3780883-be25-43f2-9552-d40fa7d6f934
+        productId:
+          type: string
+          example: 78912345678011
+        batchTypeId:
+          type: string
+          example: c6d0ef07-0e12-47ee-8ef3-9dce20d29b56
+        quantity:
+          type: number
+          example: 20
+      required:
+        - code
+        - productId
+        - batchTypeId
+        - quantity
+    InventoryItem:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 13589a78-038a-4bca-a56a-84b787c085a6
+        productId:
+          type: string
+          example: 78912345678011
+        batchTypeId:
+          type: string
+          example: c6d0ef07-0e12-47ee-8ef3-9dce20d29b56
+        inventoryId:
+          type: string
+          example: c3780883-be25-43f2-9552-d40fa7d6f934
+        quantity:
+          type: number
+          example: 20
+        createdAt:
+          type: string
+          example: 2024-01-13T12:46:09.008+00:00
+    InventoryItemReport:
+      type: object
+      properties:
+        productId:
+          type: string
+          example: 78912345678011
+        name:
+          type: string
+          example: My Product
+        price:
+          type: number
+          example: 2.50
+        expectedQuantity:
+          type: number
+          example: 10
+        actualQuantity:
+          type: number
+          example: 20
+        expectedTotalPrice:
+          type: number
+          example: 25.00
+        actualTotalPrice:
+          type: number
+          example: 50.00
+    ApiError:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          example: 2024-01-13T12:46:09.008+00:00
+        path:
+          type: string
+          example: v1/inventories
+        status:
+          type: integer
+          format: int32
+          example: 400
+        message:
+          type: string
+          example: One of more input fields are invalid. Please fix them and try again.
