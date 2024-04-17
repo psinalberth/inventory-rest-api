@@ -1,20 +1,20 @@
 package com.github.psinalberth.domain.inventory.infrastructure.extractor;
 
 import com.github.psinalberth.api.providers.opencsv.CsvExporter;
-import com.github.psinalberth.domain.product.infrastructure.database.InventoryItemReportEntity;
+import com.github.psinalberth.domain.inventory.core.model.InventoryItemReport;
 import jakarta.inject.Named;
 
 import java.util.Optional;
 
 @Named
-class ItemExporter extends CsvExporter<InventoryItemOpenCsv, InventoryItemReportEntity> implements InventoryItemDataExporter {
+class InventoryItemOpenCsvExporter extends CsvExporter<InventoryItemOpenCsv, InventoryItemReport> implements InventoryItemDataExporter {
     @Override
     public Class<InventoryItemOpenCsv> getType() {
         return InventoryItemOpenCsv.class;
     }
 
     @Override
-    public InventoryItemOpenCsv mapFromBean(final InventoryItemReportEntity input) {
+    public InventoryItemOpenCsv mapFromBean(final InventoryItemReport input) {
         return Optional.ofNullable(input)
                 .map(value -> new InventoryItemOpenCsv(
                        value.productId(),

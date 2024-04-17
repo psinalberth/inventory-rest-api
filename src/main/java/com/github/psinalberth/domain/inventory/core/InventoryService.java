@@ -43,7 +43,7 @@ public class InventoryService implements CreateInventory, FetchInventory, Update
     }
 
     @Override
-    public CompletableFuture<Result<Inventory>> update(Inventory inventory) {
+    public CompletableFuture<Result<Inventory>> update(final Inventory inventory) {
         return Result.fromFuture(() -> inventoryRepository.save(inventory))
                 .toFuture();
     }

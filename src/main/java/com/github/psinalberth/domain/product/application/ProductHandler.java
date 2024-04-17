@@ -1,6 +1,5 @@
 package com.github.psinalberth.domain.product.application;
 
-import com.github.psinalberth.api.providers.reactor.ServerResponseExtensions;
 import com.github.psinalberth.domain.inventory.core.model.Inventory;
 import com.github.psinalberth.domain.inventory.core.model.InventoryGroup;
 import com.github.psinalberth.domain.inventory.core.model.command.FetchInventoryCommand;

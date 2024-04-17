@@ -1,8 +1,11 @@
-package com.github.psinalberth.domain.product.infrastructure.database;
+package com.github.psinalberth.domain.inventory.infrastructure.database;
 
+import com.github.psinalberth.domain.product.infrastructure.database.InventoryItemReportEntity;
+import com.github.psinalberth.domain.product.infrastructure.database.ProductMongoEntity;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators.Multiply;
 import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
@@ -19,12 +22,12 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 @Named
 @RequiredArgsConstructor
-public class InventoryItemQuery {
+public class InventoryItemReportMongoRepository {
 
     private final ReactiveMongoTemplate mongoTemplate;
 
     public Flux<InventoryItemReportEntity> queryItems(final String inventoryId) {
-        var aggregation = newAggregation(
+        var aggregation = Aggregation.newAggregation(
                 ProductMongoEntity.class,
                 match(where("_id.inventory_id").is(inventoryId)),
                 lookupOperation(),

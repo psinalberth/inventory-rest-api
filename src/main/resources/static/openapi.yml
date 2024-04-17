@@ -55,12 +55,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+        default:
         '500':
           description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+
   '/inventories/{code}':
     get:
       tags:
@@ -227,9 +229,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/InventoryItem'
+                $ref: '#/components/schemas/Product'
         '404':
           description: Product not found
           content:
@@ -371,6 +371,36 @@ components:
         createdAt:
           type: string
           example: 2024-01-13T12:46:09.008+00:00
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 78912345
+        name:
+          type: string
+          example: Simple Product
+        category:
+          type: object
+          example:
+            code: 11
+            name: My Category
+        department:
+          type: object
+          example:
+            code: 18
+            name: Department no. 1
+        group:
+          type: object
+          example:
+            code: 3211
+            name: Product Group
+        quantity:
+          type: number
+          example: 15
+        price:
+          type: number
+          example: 12.75
     InventoryItemReport:
       type: object
       properties:
