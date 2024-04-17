@@ -1,0 +1,1 @@
+heroku config:set _JAVA_OPTIONS="--enable-preview"
