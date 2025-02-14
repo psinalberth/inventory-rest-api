@@ -18,9 +18,10 @@ class ProductCsvImporter extends CsvImporter<Product, ProductOpenCsv> implements
                 .map(value -> new Product(
                         value.id(),
                         value.name(),
-                        toCategory(input.category()),
-                        toDepartment(input.department()),
-                        toGroup(input.group()),
+                        toCategory(value.category()),
+                        toDepartment(value.department()),
+                        toGroup(value.group()),
+                        value.measureUnit(),
                         value.quantity(),
                         value.price()
                 ))
@@ -30,8 +31,8 @@ class ProductCsvImporter extends CsvImporter<Product, ProductOpenCsv> implements
     private static ProductCategory toCategory(final ProductCategoryOpenCsv input) {
         return Optional.ofNullable(input)
                 .map(value -> new ProductCategory(
-                        input.code(),
-                        input.name()
+                        value.code(),
+                        value.name()
                 ))
                 .orElse(null);
     }
@@ -39,8 +40,8 @@ class ProductCsvImporter extends CsvImporter<Product, ProductOpenCsv> implements
     private static ProductGroup toGroup(final ProductGroupOpenCsv input) {
         return Optional.ofNullable(input)
                 .map(value -> new ProductGroup(
-                        input.code(),
-                        input.name()
+                        value.code(),
+                        value.name()
                 ))
                 .orElse(null);
     }
@@ -48,8 +49,8 @@ class ProductCsvImporter extends CsvImporter<Product, ProductOpenCsv> implements
     private static ProductDepartment toDepartment(final ProductDepartmentOpenCsv input) {
         return Optional.ofNullable(input)
                 .map(value -> new ProductDepartment(
-                        input.code(),
-                        input.name()
+                        value.code(),
+                        value.name()
                 ))
                 .orElse(null);
     }

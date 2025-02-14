@@ -22,6 +22,7 @@ public class ProductDatabaseRepository implements ProductRepository {
 
     @Override
     public CompletableFuture<Product> save(final Product product) {
+        log.info("Saving product {}", product);
         return Mono.just(mapper.toEntity(null, product))
                 .flatMap(delegate::save)
                 .map(mapper::toDomain)
@@ -38,6 +39,7 @@ public class ProductDatabaseRepository implements ProductRepository {
 
     @Override
     public CompletableFuture<List<Product>> saveAll(final String inventoryId, final Stream<Product> products) {
+        log.info("Saving products related to inventory with id {}", inventoryId);
         return Flux.fromStream(products)
                 .map(product -> mapper.toEntity(inventoryId, product))
                 .flatMap(delegate::save)

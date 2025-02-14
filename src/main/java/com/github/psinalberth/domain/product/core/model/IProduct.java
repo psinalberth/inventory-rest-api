@@ -8,6 +8,7 @@ public interface IProduct {
     IProductCategory category();
     IProductDepartment department();
     IProductGroup group();
+    String measureUnit();
     BigDecimal quantity();
     BigDecimal price();
 }

@@ -4,22 +4,7 @@ spring:
   application:
     name: 'inventario-api'
 
-keycloak:
-  realm: catchup-realm
-  auth-server-url: http://localhost:8081/auth
-  ssl-required: external
-  resource: maestro-client
-  credentials:
-    secret: 2d462b07-b424-49f1-bef6-db8480adb85e
-  use-resource-role-mappings: true
-  bearer-only: true
-
 app:
-  keycloak:
-    serverUrl: http://localhost:8081/auth
-    realm: catchup-realm
-    clientId: maestro-client
-    secret: 2d462b07-b424-49f1-bef6-db8480adb85e
   config:
     inventory:
       default-id: ${APP_CONFIG_INVENTORY_DEFAULT_ID:ZXC8GH}
@@ -45,7 +30,7 @@ spring:
       on-profile: heroku
   data:
     mongodb:
-      uri: mongodb+srv://psiservti:IpODgJBz3qcV5nok@inventorydb.7junjst.mongodb.net/inventory_db?retryWrites=true&w=majority&appName=inventorydb
+      uri: ${MONGODB_URI}
 
 ---
 

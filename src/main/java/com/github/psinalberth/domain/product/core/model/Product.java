@@ -10,6 +10,7 @@ public record Product(
         ProductCategory category,
         ProductDepartment department,
         ProductGroup group,
+        String measureUnit,
         BigDecimal quantity,
         BigDecimal price
 ) implements Identity, IProduct {
